@@ -16,7 +16,7 @@ L99
 R14
 L82
 '''
-EXPECTED = 3
+EXPECTED = 6
 
 @pytest.mark.parametrize(
     ("input_test", "expected"),
@@ -31,16 +31,18 @@ def password(s: str) -> int:
     rotations = [(line[0], int(line[1:])) for line in s.splitlines()]
     pointer = 50
     count = 0
-    
+
     for direction, steps in rotations:
-        if direction == 'L':
-            pointer -= steps
+        sign = -1 if direction == 'L' else 1
+        if sign == -1:
+            i0 = pointer if pointer != 0 else 100
         else:
-            pointer += steps
-        
-        pointer %= 100
-        if pointer == 0:
-            count += 1
+            i0 = (100 - pointer) if pointer != 0 else 100
+
+        if steps >= i0:
+            count += 1 + (steps - i0) // 100
+
+        pointer = (pointer + sign * steps) % 100
 
     return count 
 
