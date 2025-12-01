@@ -1,3 +1,4 @@
+from itertools import accumulate
 from pathlib import Path
 
 import pytest
@@ -30,19 +31,15 @@ def test(input_test: str, expected: int) -> None:
 def password(s: str) -> int:
     rotations = [(line[0], int(line[1:])) for line in s.splitlines()]
     pointer = 50
-    count = 0
+    rotations = [(-1 if direction == "L" else 1) * steps for direction, steps in rotations]
     
-    for direction, steps in rotations:
-        if direction == 'L':
-            pointer -= steps
-        else:
-            pointer += steps
-        
-        pointer %= 100
-        if pointer == 0:
-            count += 1
-
-    return count 
+    positions = accumulate(
+        rotations, 
+        lambda _pointer, _step: (_pointer + _step) % 100, 
+        initial=pointer
+    )
+    
+    return sum(position == 0 for position in positions)
 
 
 def main():
