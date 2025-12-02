@@ -21,16 +21,11 @@ def test(input_test: str, expected: int) -> None:
     assert sum_invalid(input_test) == expected
     
 def invalid(n: int) -> bool:
-    digits = math.floor(math.log10(n)) + 1
     
-    half = digits // 2
     str_n = str(n)
-    for i in range(1, half + 1):
-        if digits % i == 0:
-            pattern = str_n[:i]
-            re_pattern = re.compile(f"({pattern}){{{digits // i}}}")
-            if re.fullmatch(re_pattern, str_n):
-                return True
+    re_pattern = re.compile(r"^(\d+)\1+$")
+    if re.fullmatch(re_pattern, str_n):
+        return True
 
     return False
 
