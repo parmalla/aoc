@@ -1,4 +1,5 @@
 import math
+import re
 from pathlib import Path
 
 import pytest
@@ -27,7 +28,8 @@ def invalid(n: int) -> bool:
     for i in range(1, half + 1):
         if digits % i == 0:
             pattern = str_n[:i]
-            if pattern * (digits // i) == str_n:
+            re_pattern = re.compile(f"({pattern}){{{digits // i}}}")
+            if re.fullmatch(re_pattern, str_n):
                 return True
 
     return False
