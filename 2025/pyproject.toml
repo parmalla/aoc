@@ -7,5 +7,6 @@ requires-python = ">=3.13"
 dependencies = [
     "adventofcode>=25.7",
     "contexttimer>=0.3.3",
+    "numpy>=2.3.5",
     "pytest>=9.0.1",
 ]
