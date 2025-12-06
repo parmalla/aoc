@@ -9,8 +9,6 @@ import re
 from functools import reduce
 from itertools import zip_longest
 
-import numpy as np
-
 inp = """\
 123 328  51 64
  45 64  387 23
@@ -90,7 +88,7 @@ def get_ceph_row(row: list[list[int]], alignment: str) -> list[int]:
 
 def part1(inp: str) -> str | int | None:
     mat, operators = parse_input(inp)
-    transposed = np.array(mat).transpose()
+    transposed = list(zip(*mat))
     return sum(
         reduce(op, row, initial)
         for row, (op, initial) in zip(transposed, operators)
@@ -102,7 +100,7 @@ def part2(inp: str) -> str | int | None:
     alignments = parse_alignment(inp)
     ceph_mat = [
         get_ceph_row(list(map(get_digits, row)), alignment)
-        for row, alignment in zip(np.array(mat).transpose(), alignments)
+        for row, alignment in zip(list(zip(*mat)), alignments)
     ]
 
     return sum(
@@ -112,7 +110,7 @@ def part2(inp: str) -> str | int | None:
 
 
 def main():
-    part2(inp)
+    print(part1(inp))
 
 
 if __name__ == "__main__":
